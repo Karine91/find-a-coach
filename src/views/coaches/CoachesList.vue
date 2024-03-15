@@ -4,7 +4,7 @@
     <BaseCard>
       <div class="controls">
         <BaseButton mode="outline">Refresh</BaseButton>
-        <BaseButton link to="/register">Register as Coach</BaseButton>
+        <BaseButton v-if="!isCoach" link to="/register">Register as Coach</BaseButton>
       </div>
       <ul v-if="hasCoaches">
         <CoachItem v-for="coach in filteredCoaches" :key="coach.id" v-bind="coach" />
@@ -42,6 +42,8 @@ const filteredCoaches = computed(() => {
     return false
   })
 })
+
+const isCoach = computed(() => store.getters['coaches/isCoach'])
 
 const hasCoaches = computed(() => store.getters['coaches/hasCoaches'])
 

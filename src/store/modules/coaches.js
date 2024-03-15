@@ -28,8 +28,29 @@ export default {
     },
     hasCoaches(state) {
       return !!state.coaches?.length
+    },
+    isCoach(_, getters, _2, rootGetters) {
+      const coaches = getters.coaches
+      const userId = rootGetters.userId
+      return coaches.some((coach) => coach.id === userId)
     }
   },
-  actions: {},
-  mutations: {}
+  actions: {
+    registerCoach(context, data) {
+      const coachData = {
+        firstName: data.first,
+        lastName: data.last,
+        description: data.desc,
+        hourlyRate: data.rate,
+        areas: data.areas,
+        id: context.rootGetters.userId
+      }
+      context.commit('registerCoach', coachData)
+    }
+  },
+  mutations: {
+    registerCoach(state, payload) {
+      state.coaches.push(payload)
+    }
+  }
 }
