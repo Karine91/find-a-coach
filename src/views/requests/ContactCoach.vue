@@ -39,7 +39,7 @@ const sendForm = () => {
 
   store.dispatch('requests/contactCoach', {
     message: data.value.message,
-    email: data.value.message,
+    email: data.value.email,
     coachId: route.params.id
   })
 
