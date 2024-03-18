@@ -44,7 +44,10 @@ export default {
     },
     async fetchRequests(context) {
       const coachId = context.rootGetters.userId
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/requests/${coachId}.json`)
+      const token = context.rootGetters.token
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/requests/${coachId}.json?auth=${token}`
+      )
 
       const resData = await res.json()
 

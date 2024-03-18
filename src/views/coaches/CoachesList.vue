@@ -8,8 +8,11 @@
       <BaseCard>
         <div class="controls">
           <BaseButton mode="outline" @click="loadCoaches(true)">Refresh</BaseButton>
-          <BaseButton v-if="!isCoach && !isLoading" link to="/register"
+          <BaseButton v-if="isLoggedIn && !isCoach && !isLoading" link to="/register"
             >Register as Coach</BaseButton
+          >
+          <BaseButton link to="/auth?redirect=register" v-if="!isLoggedIn"
+            >Login to Register as a Coach</BaseButton
           >
         </div>
         <div v-if="isLoading">
@@ -38,6 +41,7 @@ const filters = ref({
 })
 const isLoading = ref(false)
 const error = ref(null)
+const isLoggedIn = computed(() => store.getters.isAuthenticated)
 
 const filteredCoaches = computed(() => {
   return store.getters['coaches/coaches'].filter((item) => {

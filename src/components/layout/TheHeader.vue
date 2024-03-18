@@ -6,13 +6,29 @@
         <li>
           <router-link to="/coaches">All Coaches</router-link>
         </li>
-        <li>
+        <li v-if="isLoggedIn">
           <router-link to="/requests">Requests</router-link>
+        </li>
+        <li v-else>
+          <router-link to="/auth">Login</router-link>
+        </li>
+        <li v-if="isLoggedIn" @click="logout">
+          <BaseButton>Logout</BaseButton>
         </li>
       </ul>
     </nav>
   </header>
 </template>
+
+<script setup>
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+
+const store = useStore()
+
+const isLoggedIn = computed(() => store.getters.isAuthenticated)
+const logout = () => store.dispatch('logout')
+</script>
 
 <style scoped>
 header {

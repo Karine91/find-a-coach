@@ -55,10 +55,14 @@ export default {
         areas: data.areas
       }
 
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/coaches/${userId}.json`, {
-        method: 'PUT',
-        body: JSON.stringify(coachData)
-      })
+      const token = context.rootGetters.token
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/coaches/${userId}.json?auth=${token}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify(coachData)
+        }
+      )
       // const data = await res.json()
       if (!res.ok) {
         // error

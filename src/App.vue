@@ -1,6 +1,23 @@
 <script setup>
-import { RouterView } from 'vue-router'
+import { onBeforeMount, watch, computed } from 'vue'
+import { RouterView, useRouter } from 'vue-router'
 import TheHeader from './components/layout/TheHeader.vue'
+import { useStore } from 'vuex'
+
+const store = useStore()
+const router = useRouter()
+
+onBeforeMount(() => {
+  store.dispatch('tryLogin')
+})
+
+const didAutoLogout = computed(() => store.getters.didAutoLogout)
+
+watch(didAutoLogout, (newVal, oldVal) => {
+  if (newVal && newVal !== oldVal) {
+    router.replace('/coaches')
+  }
+})
 </script>
 
 <template>
