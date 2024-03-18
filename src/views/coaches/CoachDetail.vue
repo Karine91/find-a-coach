@@ -10,7 +10,9 @@
       <BaseCard>
         <header>
           <h2>Interested? Reach out now!</h2>
-          <BaseButton link :to="contactLink">Contact</BaseButton>
+          <BaseButton v-if="route.name !== 'contact-coach'" link :to="contactLink"
+            >Contact</BaseButton
+          >
         </header>
         <RouterView></RouterView>
       </BaseCard>
@@ -35,15 +37,17 @@ const selectedCoach = ref(null)
 const store = useStore()
 const route = useRoute()
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
+  await store.dispatch('coaches/loadCoaches', { forceRefresh: false })
   selectedCoach.value = store.getters['coaches/coaches'].find((coach) => coach.id === props.id)
 })
 
-const contactLink = computed(() => `${route.path}/${props.id}/contact`)
+const contactLink = computed(() => ({ name: 'contact-coach', params: { id: props.id } }))
+
 const hourlyRate = computed(() => selectedCoach.value?.hourlyRate)
 const areas = computed(() => selectedCoach.value?.areas)
 const fullName = computed(
   () => `${selectedCoach.value?.firstName} ${selectedCoach.value?.lastName}`
 )
-const description = computed(() => selectedCoach.value.description)
+const description = computed(() => selectedCoach.value?.description)
 </script>

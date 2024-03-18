@@ -1,12 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import CoachDetail from '@/views/coaches/CoachDetail.vue'
-import CoachesList from '@/views/coaches/CoachesList.vue'
-import CoachesRegistration from '@/views/coaches/CoachesRegistration.vue'
-import ContactCoach from '@/views/requests/ContactCoach.vue'
-import RequestsReceived from '@/views/requests/RequestsReceived.vue'
-import NotFound from '@/views/NotFound.vue'
-import UserAuth from '@/views/auth/UserAuth.vue'
 import store from '@/store'
 
 const router = createRouter({
@@ -16,36 +9,42 @@ const router = createRouter({
     {
       path: '/coaches',
       name: 'coaches',
-      component: CoachesList
+      component: () => import('@/views/coaches/CoachesList.vue')
     },
     {
       path: '/coaches/:id',
       name: 'coach',
       props: true,
-      component: CoachDetail,
-      children: [{ path: 'contact', component: ContactCoach }]
+      component: () => import('@/views/coaches/CoachDetail.vue'),
+      children: [
+        {
+          path: 'contact',
+          component: import(() => '@/views/requests/ContactCoach.vue'),
+          name: 'contact-coach'
+        }
+      ]
     },
     {
       path: '/register',
       meta: { requiresAuth: true },
       name: 'register',
-      component: CoachesRegistration
+      component: () => import('@/views/coaches/CoachesRegistration.vue')
     },
     {
       path: '/requests',
       meta: { requiresAuth: true },
       name: 'requests',
-      component: RequestsReceived
+      component: () => import('@/views/requests/RequestsReceived.vue')
     },
     {
       path: '/auth',
       meta: { requiresUnAuth: true },
       name: 'login',
-      component: UserAuth
+      component: () => import('@/views/auth/UserAuth.vue')
     },
     {
       path: '/:notFound(.*)',
-      component: NotFound
+      component: () => import('@/views/NotFound.vue')
     }
   ]
 })
